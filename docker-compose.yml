@@ -1,9 +1,11 @@
 services:
   react-app:
+    image: ${DOCKER_IMAGE:-react-sample-app}:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile
     container_name: react_sample_app_9016
     ports:
-      - "9016:9016"
+      - "${PORT:-9016}:9016"
     restart: unless-stopped
+

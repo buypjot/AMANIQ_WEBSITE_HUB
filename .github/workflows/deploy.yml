@@ -30,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/amandesk-website
+          images: ${{ secrets.DOCKER_USERNAME }}/amaniq-website
           tags: |
             type=raw,value=latest
             type=sha,format=long
@@ -41,9 +41,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/amaniq-website:latest
-            ${{ secrets.DOCKER_USERNAME }}/amaniq-website:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
