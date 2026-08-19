@@ -94,7 +94,7 @@ jobs:
 
             # Create default .env if not exists
             if [ ! -f .env ]; then
-              echo "PORT=9015" > .env
+              echo "PORT=9016" > .env
               echo "NODE_ENV=production" >> .env
               echo "HOSTNAME=0.0.0.0" >> .env
             fi
