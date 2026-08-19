@@ -33,7 +33,8 @@ jobs:
           images: ${{ secrets.DOCKER_USERNAME }}/amaniq-website
           tags: |
             type=raw,value=latest
-            type=sha,format=long
+            type=raw,value=${{ github.sha }}
+            type=sha,format=long,prefix=
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
