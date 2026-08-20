@@ -92,18 +92,20 @@ jobs:
             # Ensure we deploy from /var/opt/amaniq_website
             cd /var/opt/amaniq_website
 
-            # Create default .env if not exists
-            if [ ! -f .env ]; then
-              echo "PORT=9016" > .env
-              echo "NODE_ENV=production" >> .env
-              echo "HOSTNAME=0.0.0.0" >> .env
-            fi
+            # Ensure .env has the current configuration
+            echo "PORT=9016" > .env
+            echo "NODE_ENV=production" >> .env
+            echo "HOSTNAME=0.0.0.0" >> .env
+
+            # Stop and remove legacy container if running on old port 9015
+            docker stop react_sample_app_9015 2>/dev/null || true
+            docker rm react_sample_app_9015 2>/dev/null || true
 
             # Log in to Docker Hub on the server
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             # Run production deployment using Docker Compose
-            DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/amaniq-website" IMAGE_TAG="${{ github.sha }}" docker compose up -d --pull always
+            DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/amaniq-website" IMAGE_TAG="${{ github.sha }}" docker compose up -d --pull always --no-build
 
             # Clean up old/dangling images to free disk space
             docker image prune -f
