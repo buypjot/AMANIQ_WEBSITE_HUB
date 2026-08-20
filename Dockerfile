@@ -1,7 +1,7 @@
 # Use Node.js official lightweight image
 FROM node:20-alpine
 
-# Set working directory inside container
+# Set working directory inside containers
 WORKDIR /app
 
 # Copy package definition files
